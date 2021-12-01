@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 // Структура вершины
 struct vertex
@@ -7,7 +9,6 @@ struct vertex
     char name[20];
     int* neighbors;
 };
-
 
 int pop (int *arr, int end) {
     int x = arr[0];
@@ -26,18 +27,6 @@ int is_x_uniqe(int x, int *arr, int N) {
     return (1);
 }
 
-/*int add_neighbors(int *queue, int *neighbors, int end, int sear, int *searched, int size) {
-    for (int i = 0; i < size; i++) {
-        if (neighbors[i] != 0) {
-            if (is_x_uniqe((i+1), searched, sear)) {
-                queue[end++] = (i+1);
-            }
-        }
-    }
-    return (end);
-}
-*/
-
 int bfs(struct vertex *matrix, int start, char *name, int size) {
     start += 1;
     int *queue = calloc((size + 1), sizeof(int));
@@ -47,8 +36,8 @@ int bfs(struct vertex *matrix, int start, char *name, int size) {
     queue[end++] += start;
     while (queue[0] != 0) {
         int x = pop(queue, end--);// Достаем из очереди первый эллемент и двигаем очередь
-        printf ("%s = %s\n", matrix[(x-1)].name, name);
-        if (*matrix[(x-1)].name == *name)
+      //  printf ("%s = %s\n", matrix[(x-1)].name, name);
+        if (strcmp(matrix[(x-1)].name, name) == 0)
             return ((x-1));     // Нашли индекс искомого имени
         searched[sear++] = x;   // X проверен
         for (int i = 0; i < size; i++) {
@@ -58,13 +47,13 @@ int bfs(struct vertex *matrix, int start, char *name, int size) {
                 }
             }
         }
-
-        printf("\nqueue : ");
+  /*      printf("\nqueue : ");
         for (int i = 0; i < size; i++)
             printf("%d, ", queue[i]);
         printf ("\nsearched : ");
             for (int i = 0; i < size; i++)
         printf("%d, ", searched[i]);
+  */
     }
     return (-4); // Не нашли
 }
@@ -75,16 +64,12 @@ int main() {
     printf("\nInput the number of your vertices: ");
     scanf("%d", &N);
     printf("%d", N);    //rm
-
-
-
     struct vertex *matrix;      // Объявили указатель на структуру
     matrix = (struct vertex *) calloc(N, (sizeof(struct vertex) ) );
     if(!matrix) {
         printf ("Allocation failure.");
         exit (1);
     }
-
     printf("\nInput names of yours vertices via Enter: \n");
     for (int i = 0; i < N; i++) {
         scanf("%s", matrix[i].name);
@@ -113,7 +98,6 @@ int main() {
         printf ("Allocation failure.");
         exit (1);
       }
-
     FILE *file;
     file = fopen("./graph.gv", "w+t");
     //Пишем в файл
@@ -137,7 +121,6 @@ int main() {
     fprintf(file, "}");
     //Закрываем файл
     fclose(file);
-
     // Сам поиск в ширину :
     printf("\nInput the name :\n");
     char name[20];
@@ -145,9 +128,9 @@ int main() {
     printf("\nInput the start point :\n");
     int start = 0;
     scanf("%d", &start);
-    printf("%s - %d", name, start);
+  //  printf("%s - %d", name, start);
     int res = bfs(matrix, start, name, N);
-    printf ("\n%d\n", res);
+  //  printf ("\n%d\n", res);
     if (res < 0)
         printf("No such name\n");
     else
