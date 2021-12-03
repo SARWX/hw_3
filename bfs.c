@@ -101,7 +101,7 @@ int main() {
     FILE *file;
     file = fopen("./graph.gv", "w+t");
     //Пишем в файл
-    fprintf(file, "graph HomeWork {\n");
+    fprintf(file, "digraph HomeWork {\n");
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             if (!matrix[i].neighbors[j]) // Если 0
